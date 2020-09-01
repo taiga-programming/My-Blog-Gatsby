@@ -7,7 +7,7 @@ export default () => (
      query={graphql` 
   query HomeQuery {
     allContentfulBlog(
-        limit: 1
+   
         sort: { fields: [createdAt], order: DESC }     
       ) {
       edges {
@@ -17,6 +17,7 @@ export default () => (
           title
           category {
             id
+           
           }
           featuredImage {
             fluid(maxWidth: 1200, quality: 85) {
