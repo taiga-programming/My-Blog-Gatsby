@@ -56,7 +56,7 @@
 }
 
 .blog__content blockquote:before {
-  content: url('../images/quote.svg');
+  content: url('../images/iconmonstr-quote-3.svg');
   display: inline-block;
   width: 50px;
   transform: translateY(30px);

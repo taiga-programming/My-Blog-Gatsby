@@ -9,7 +9,6 @@ export default () => (
     allContentfulBlog(
         limit: 1
         sort: { fields: [createdAt], order: DESC }
-     
       ) {
       edges {
         node {

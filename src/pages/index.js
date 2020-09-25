@@ -15,7 +15,7 @@ const IndexPage = () => (
     <Nav />
     <Featured />
     <Home/>
-    <Link to="/blog" className="View More">View Mores</Link>
+    <Link to='/blog' className="viewmore">View Mores</Link>
     <Footer/> 
   </Layout>
 )

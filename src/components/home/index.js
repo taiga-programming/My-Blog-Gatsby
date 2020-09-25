@@ -16,8 +16,8 @@ export default () => (
           slug
           title
           category {
+            title
             id
-           
           }
           featuredImage {
             fluid(maxWidth: 1200, quality: 85) {
@@ -42,10 +42,14 @@ export default () => (
                 url(${edge.node.featuredImage.fluid.src})`
             }}
         onClick={() => navigate(`/blog/${edge.node.slug}`)} >
-        {edge.node.category.map(categories=> (
-            <p className='card__category'>{categories.category}</p>
+          
+         
+        {edge.node.category.map( ss=> (
+          
+            <p className='card__category' >{ss.title}</p>
         ))}
         <p className='card__title'>{edge.node.title}</p>
+          
         </div>
         ))}
       </div>

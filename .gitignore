@@ -6,7 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 .env.development 
 .env.production
-
+.index.md
 # Runtime data
 pids
 *.pid
