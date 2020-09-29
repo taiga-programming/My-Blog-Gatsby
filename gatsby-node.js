@@ -1,132 +1,71 @@
-const path = require(`path`);
 
-const makeRequest = (graphql, request) => new Promise((resolve, reject) => {
- // Query for nodes to use in creating pages.
- resolve(
-   graphql(request).then(result => {
-     if (result.errors) {
-       reject(result.errors)
-     }
-     return result;
-   })
- )
-});
+const path = require(`path`)
 
-// Implement the Gatsby API "createPages". This is called once the
-// data layer is bootstrapped to let plugins create pages from data.
-exports.createPages = ({ actions, graphql }) => {
- const { createPage } = actions;
+exports.createPages = async ({ actions, graphql }) => {
+  const { createPage } = actions
 
 
-// Create pages for each blog.
- const getBlog = makeRequest(graphql, `
-   {
-     allContentfulBlog (
-       sort: { fields: [createdAt], order: DESC }
-      )
-       edges {
-         node {
-           id
-           slug
-         }
-       }
-     }
-   }
-   `).then(result => {
-   result.data.allContentfulBlog.edges.forEach( node => {
-     createPage({
-       path: `blog/${node.slug}`,
-       component: path.resolve(`src/templates/blog.js`),
-       context: {
-         id: node.id,
-       },
-     })
-   })
-});
+  const { data }= await graphql(`
+    query {
+      allContentfulBlog {
+        edges {
+          node {
+            slug 
+            id
+          }
+        }
+      }
+    }
+  `)
+  
+  data.allContentfulBlog.edges.forEach(({ node })=> {
+    createPage({
+      path: `blog/${ node.slug }`,
+      component: path.resolve("./src/templates/blog.js"),
+      context: {
+        slug:node.slug,
+        id: node.id
+      }
+    })
+  })
+} 
 
 
+// const path = require(`path`)
 
-
-//Create tech category page, including pagination
-// const getTech = makeRequest(graphql,`
-// {
-//   allContentfulBlog (
-//     sort: { fields: [createdAt], order: DESC }
-//     filter: {
-       
-//       categories: {elemMatch: {category: {eq: "Tech"}}}
-//     },)
-//   {
-//     edges {
-//       node {
-//         id
-//         slug
+// exports.createPages = ({ graphql, actions }) => {
+//   const { createPage } = actions
+//   const blogTemplate = path.resolve(`src/templates/blog.js`)
+//   return graphql(`
+//     query loadPagesQuery ($limit: Int!) {
+//       allContentfulBlog(limit: $limit) {
+//         edges {
+//           nodes {
+//             node { 
+//               allMarkdownRemark {
+//                 id 
+//                 slug
+//               }
+//             }
+//           }
+//         }
 //       }
 //     }
-//   }
-// }
-// `).then(result => {
-//   const blogs = result.data.allContentfulBlog.edges
-//   const blogsPerPage = 9
-//   const numPages = Math.ceil(blogs.length / blogsPerPage)
-
-//   Array.from({ length: numPages }).forEach((_, i) => {
-//     createPage({
-//       path: i === 0 ? `/category/tech` : `/category/tech/${i + 1}`,
-//       component: path.resolve("./src/templates/tech.js"),
-//       context: {
-//         limit: blogsPerPage,
-//         skip: i * blogsPerPage,
-//         numPages,
-//         currentPage: i + 1
-//       },
-//     })
-//   })
-// });
-
-
-
-
-
-//Create archive page for all blogs, including pagination
-// const getArchive = makeRequest(graphql, `
-// {
-//   allContentfulBlog (
-//     sort: { fields: [createdAt], order: DESC }
-//      filter: {
-//        node_local: {eq: "en-Us"}},)
-//      { 
-   
-//     edges {
-//       node {
-//         id
-//         slug
-//       }
+//   `, { limit: 100000 }).then(result => {
+//     if (result.errors) {
+//       throw result.errors
 //     }
-//   }
-// }
-// `).then(result => {
-//   const blogs = result.data.allContentfulBlog.edges
-//   const blogsPerPage = 9
-//   const numPages = Math.ceil(blogs.length / blogsPerPage)
 
-//   Array.from({ length: numPages }).forEach((_, i) => {
-//     createPage({
-//       path: i === 0 ? `/blog` : `/blog/${i + 1}`,
-//       component: path.resolve("./src/templates/archive.js"),
-//       context: {
-//         limit: blogsPerPage,
-//         skip: i * blogsPerPage,
-//         numPages,
-//         currentPage: i + 1
-//       },
+//     // Create blog post pages.
+//     result.data.allMarkdownRemark.edges.forEach( edge=> { 
+//       createPage({
+//         path:  `/blog/${edge.slug}`,
+//         component:  blogTemplate,
+//         context: {
+//           id: node.id
+//         },
+//       })
 //     })
 //   })
-// });
+// }
 
- return Promise.all([
-   getBlog
-  //  getArchive,
-  //  getTech
-  ])
-};

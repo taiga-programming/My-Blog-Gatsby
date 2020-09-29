@@ -33,7 +33,7 @@ export default () => (
      render={data => (
         <div className='feed'>
         {data.allContentfulBlog.edges.map(edge => (
-            <div key={edge.node.id} className='card'
+            <div  key={edge.node.id} className='card'
             style={{
                 backgroundImage: `linear-gradient(
                 to bottom, 
@@ -46,7 +46,7 @@ export default () => (
          
         {edge.node.category.map( ss=> (
           
-            <p className='card__category' >{ss.title}</p>
+            <p key={ss.title} className='card__category' >{ss.title}</p>
         ))}
         <p className='card__title'>{edge.node.title}</p>
           

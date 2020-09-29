@@ -1,3 +1,91 @@
+// const path = require(`path`);
+
+// const makeRequest = (graphql, request) => new Promise((resolve, reject) => {
+//  // Query for nodes to use in creating pages.
+//  resolve(
+//    graphql(request).then(result => {
+//      if (result.errors) {
+//        reject(result.errors)
+     
+//      }
+//      return result;
+//    })
+//  )
+// });
+
+// // Implement the Gatsby API "createPages". This is called once the
+// // data layer is bootstrapped to let plugins create pages from data.
+// exports.createPages = ({ actions, graphql }) => {
+//  const { createPage } = actions;
+
+
+// // Create pages for each blog.
+//  const getBlog = makeRequest(graphql, `
+//    {
+//      allContentfulBlog (
+//        sort: { fields: [createdAt], order: DESC }
+//       )
+//        edges {
+//          node {
+//            id
+//            slug
+//          }
+//        }
+//      }
+//    }
+//    `).then(result => {
+//    result.data.allContentfulBlog.edges.forEach( node => {
+//      createPage({
+//        path: `/blog/${node.slug}`,
+      
+//        component: path.resolve('./src/templates/blog.js'),
+//        context: {
+//          id: node.id,
+     
+//        },
+//      })
+//    })
+// });
+
+
+
+//  return Promise.all([
+//    getBlog,
+//   //  getArchive,
+//   //  getTech
+//   ])
+// };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // // Create travel category page, including pagination
 // const getTravel = makeRequest(graphql, `
@@ -107,4 +195,140 @@
 //     })
 //   })
 // });
+
+
+
+
+
+//Create tech category page, including pagination
+// const getTech = makeRequest(graphql,`
+// {
+//   allContentfulBlog (
+//     sort: { fields: [createdAt], order: DESC }
+//     filter: {
+       
+//       categories: {elemMatch: {category: {eq: "Tech"}}}
+//     },)
+//   {
+//     edges {
+//       node {
+//         id
+//         slug
+//       }
+//     }
+//   }
+// }
+// `).then(result => {
+//   const blogs = result.data.allContentfulBlog.edges
+//   const blogsPerPage = 9
+//   const numPages = Math.ceil(blogs.length / blogsPerPage)
+
+//   Array.from({ length: numPages }).forEach((_, i) => {
+//     createPage({
+//       path: i === 0 ? `/blog/tech` : `/blog/tech/${i + 1}`,
+//       component: path.resolve("./src/templates/tech.js"),
+//       context: {
+//         limit: blogsPerPage,
+//         skip: i * blogsPerPage,
+//         numPages,
+//         currentPage: i + 1
+//       },
+//     })
+//   })
+// });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//Create tech category page, including pagination
+const getTech = makeRequest(graphql,`
+{
+  allContentfulBlog (
+    sort: { fields: [createdAt], order: DESC }
+    filter: {
+       
+      categories: {elemMatch: {category: {eq: "Tech"}}}
+    },)
+  {
+    edges {
+      node {
+        id
+        slug
+      }
+    }
+  }
+}
+`).then(result => {
+  const blogs = result.data.allContentfulBlog.edges
+  const blogsPerPage = 9
+  const numPages = Math.ceil(blogs.length / blogsPerPage)
+
+  Array.from({ length: numPages }).forEach((_, i) => {
+    createPage({
+      path: i === 0 ? `/blog/tech` : `/blog/tech/${i + 1}`,
+      component: path.resolve("./src/templates/tech.js"),
+      context: {
+        limit: blogsPerPage,
+        skip: i * blogsPerPage,
+        numPages,
+        currentPage: i + 1
+      },
+    })
+  })
+});
+
+
+
+
+
+//Create archive page for all blogs, including pagination
+// const getArchive = makeRequest(graphql, `
+// {
+//   allContentfulBlog (
+//     sort: { fields: [createdAt], order: DESC }
+//      filter: {
+//        node_local: {eq: "en-Us"}},)
+//      { 
+   
+//     edges {
+//       node {
+//         id
+//         slug
+//       }
+//     }
+//   }
+// }
+// `).then(result => {
+//   const blogs = result.data.allContentfulBlog.edges
+//   const blogsPerPage = 9
+//   const numPages = Math.ceil(blogs.length / blogsPerPage)
+
+//   Array.from({ length: numPages }).forEach((_, i) => {
+//     createPage({
+//       path: i === 0 ? `/blog` : `/blog/${i + 1}`,
+//       component: path.resolve("./src/templates/archive.js"),
+//       context: {
+//         limit: blogsPerPage,
+//         skip: i * blogsPerPage,
+//         numPages,
+//         currentPage: i + 1
+//       },
+//     })
+//   })
+// });
+
 
