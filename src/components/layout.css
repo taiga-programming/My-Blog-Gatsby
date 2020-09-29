@@ -7,15 +7,16 @@ body {
 
 h1 {
   font-family: Baskerville,serif;
-  font-size: 48px;
+  /* font-size: 48px; */
   font-weight: 400;
   line-height: 55px;
   color: #fff;
+  text-align: center;
   
 }
 
 .btn__med {
-  width: 124px;
+  width: 160px;
   height: 38px;
   border-radius: 5px;
   background-color: #f06666;
@@ -30,4 +31,13 @@ h1 {
 
 .btn__med:hover {
   filter: brightness(90%)
+}
+
+
+.btn__box {
+  margin-top: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }

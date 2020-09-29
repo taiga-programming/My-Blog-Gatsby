@@ -13,6 +13,7 @@ module.exports = {
   plugins: [
     `gatsby-plugin-react-helmet`,
     `gatsby-transformer-remark`,
+    `gatsby-plugin-twitter`,
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -50,7 +51,14 @@ module.exports = {
           `muli\:300,700`
         ]
       }
-    }
+    },
+    {
+      resolve: 'gatsby-remark-external-links',
+      options: {
+        target: '_blank',
+        rel: 'noopener',
+      },
+    },
     // this (optional) plugin enables Progressive Web App + Offline functionality
     // To learn more, visit: https://gatsby.dev/offline
     // `gatsby-plugin-offline`,

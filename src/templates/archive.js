@@ -89,15 +89,8 @@
 
 
 // export const query = graphql`
-// query ArchiveQuery($skip: Int!, $limit: Int!) {
+// query ($skip: Int!, $limit: Int!) {
 //   allContentfulBlog{
-//   sort: { fields: [createdAt], order: DESC }
-//     filter: { 
-//     node_locale: {eq: "en-Us",}}
-//     }
-//     skip: $skip
-//     limit: $limit 
-//     ) {
 //       edges {
 //         node {
 //           id

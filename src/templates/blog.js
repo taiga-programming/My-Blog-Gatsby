@@ -3,12 +3,14 @@ import { graphql } from 'gatsby';
 import Layout from '../components/layout';
 import Nav from '../components/nav';
 import SEO from '../components/seo';
+import Iframely from '../components/Iframely';
 import './blog.css';
 
 const BlogTemplate = (props) => {
     return (
         <Layout>
         <SEO title={props.data.contentfulBlog.seoTitle} description={props.data.contentfulBlog.seoDesriptcion} keywords={props.data.contentfulBlog.seoKeywords} />
+        <Iframely />
         <Nav />
         <div className='blog__header'>
             <div className='blog__hero' style={{backgroundImage:  `url(${props.data.contentfulBlog.featuredImage.fluid.src})`}}></div>

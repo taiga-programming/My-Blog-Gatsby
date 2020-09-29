@@ -1,11 +1,27 @@
-
 const path = require(`path`)
 
-exports.createPages = async ({ actions, graphql }) => {
-  const { createPage } = actions
+
+const makeRequest = (graphql, request) => new Promise((resolve, reject) => {
+  // Query for nodes to use in creating pages.
+  resolve(
+    graphql(request).then(result => {
+      if (result.errors) {
+        reject(result.errors)
+      }
+      return result;
+    })
+  )
+ });
 
 
-  const { data }= await graphql(`
+
+//blog...
+
+exports.createPages = ({ actions, graphql }) => {
+  const { createPage } = actions;
+ 
+
+  const getBlog =  graphql(`
     query {
       allContentfulBlog {
         edges {
@@ -16,56 +32,61 @@ exports.createPages = async ({ actions, graphql }) => {
         }
       }
     }
-  `)
+  `).then(result => {
   
-  data.allContentfulBlog.edges.forEach(({ node })=> {
+  result.data.allContentfulBlog.edges.forEach(({ node })=> {
     createPage({
       path: `blog/${ node.slug }`,
       component: path.resolve("./src/templates/blog.js"),
       context: {
-        slug:node.slug,
+        // slug:node.slug,
         id: node.id
       }
     })
   })
-} 
+} );
 
 
-// const path = require(`path`)
 
-// exports.createPages = ({ graphql, actions }) => {
-//   const { createPage } = actions
-//   const blogTemplate = path.resolve(`src/templates/blog.js`)
-//   return graphql(`
-//     query loadPagesQuery ($limit: Int!) {
-//       allContentfulBlog(limit: $limit) {
-//         edges {
-//           nodes {
-//             node { 
-//               allMarkdownRemark {
-//                 id 
-//                 slug
-//               }
-//             }
-//           }
-//         }
+return Promise.all([
+  getBlog
+  // getArchive,
+  // getTech
+ ])
+};
+
+
+
+
+// Create archive page for all blogs, including pagination
+// const getArchive = makeRequest(graphql, `
+// {
+//   allContentfulBlog (
+//     sort: { fields: [createdAt], order: DESC }
+   
+//     edges {
+//       node {
+//         id
+//         slug
 //       }
 //     }
-//   `, { limit: 100000 }).then(result => {
-//     if (result.errors) {
-//       throw result.errors
-//     }
+//   }
+// }
+// `).then(result => {
+//   const blogs = result.data.allContentfulBlog.edges
+//   const blogsPerPage = 9
+//   const numPages = Math.ceil(blogs.length / blogsPerPage)
 
-//     // Create blog post pages.
-//     result.data.allMarkdownRemark.edges.forEach( edge=> { 
-//       createPage({
-//         path:  `/blog/${edge.slug}`,
-//         component:  blogTemplate,
-//         context: {
-//           id: node.id
-//         },
-//       })
+//   Array.from({ length: numPages }).forEach((_, i) => {
+//     createPage({
+//       path: i === 0 ? `/blog` : `/blog/${i + 1}`,
+//       component: path.resolve("./src/templates/archive.js"),
+//       context: {
+//         limit: blogsPerPage,
+//         skip: i * blogsPerPage,
+//         numPages,
+//         currentPage: i + 1
+//       },
 //     })
 //   })
-// }
-
+// });
