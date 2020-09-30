@@ -10,7 +10,7 @@ const Nav = () => (
             <a className='nav__item--left' href='/'><img src={logo} alt='Traveler Pack Logo' className='nav__item--logo'/></a>
             <Link className={window.location.href.indexOf('contact') > 0 ? 'nav__item--link active' : 'nav__item--link'}
             to='/contact'>Contact</Link>
-            <Link className={window.location.href.indexOf('blog') > 0 || window.location.href.indexOf('category') > 0 ? 'nav__item--link active' : 'nav__item--link'}
+            <Link className={window.location.href.indexOf('/blog') > 0 || window.location.href.indexOf('category') > 0 ? 'nav__item--link active' : 'nav__item--link'}
             to='/blog'>Blog</Link>
         </div>
     </nav>
