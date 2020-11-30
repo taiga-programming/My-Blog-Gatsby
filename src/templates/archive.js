@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link, graphql, navigate } from 'gatsby';
 import window from 'browser-monads';
 import Nav from '../components/nav';
@@ -7,17 +8,15 @@ import './archive.css';
 
 import headerImg from '../images/general-header-image.jpg'
 
+const Archive = (props)=> {
 
+  const blogContent = props.data.allContentfulBlog;
+  const { currentPage, numPages } = props.pageContext;
+  const isFirst = currentPage === 1;
+  const isLast = currentPage === numPages;
 
-const Archive = (props) => {
-  
-  
-  const blogContent = props.data.allContentfulBlog
-  const { currentPage, numPages } = props.pageContext
-  const isFirst = currentPage === 1
-  const isLast = currentPage === numPages
-  const prevPage = currentPage -1 === 1 ? '/blog' : `/blog/${ currentPage -1 }`
-  const nextPage = `/blog/${currentPage + 1}`
+  const prevPage = currentPage -1 === 1 ? `blog` : `/blog/${ currentPage - 1 }`;
+  const nextPage = `/blog/${currentPage + 1}`;
 
   return (
     <Layout>
@@ -28,26 +27,26 @@ const Archive = (props) => {
       <div className='archive__section'>
         <div className='archive__hero'> style={{backgroundImage:  `url(${headerImg})`}}</div>
         <div className='archive__nav'>
-          <Link to='/blog' className={window.location.href.indexOf('/blog')> 0 ? 'archive__nav--link selected': 'archive__nav--link'}>Guide</Link>
+          <Link to='/blog' className={window.location.href.indexOf('/blog') > 0 ? 'archive__nav--link selected': 'archive__nav--link'}>All</Link>
           <Link to='/category/tech' className={window.location.href.indexOf('category/tech')> 0 ? 'archive__nav--link selected': 'archive__nav--link'}>Tech</Link>
+          <Link to='/category/react' className={window.location.href.indexOf('category/react')> 0 ? 'archive__nav--link selected': 'archive__nav--link'}>React</Link>
+          <Link to='/category/gatsby' className={window.location.href.indexOf('category/gatsby')> 0 ? 'archive__nav--link selected': 'archive__nav--link'}>Gatsby</Link>
         </div>
       </div>
     </header>
-     
 
     <div className='feed'>
         {blogContent.edges.map(edge => (
             <div key={edge.node.id} className='card'
             style={{
                 backgroundImage: `linear-gradient(
-                to bottom, 
+                to bottom,
                 rgba(10,10,10,0) 50%,
                 rgba(10,10,10,0.7) 100%),
                 url(${edge.node.featuredImage.fluid.src})`
             }}
           onClick={() => navigate(`/blog/${edge.node.slug}`)} >
-          
-         
+
         {edge.node.category.map(categories=> (
             <p className='card__category'>{categories.title}</p>
         ))}
@@ -55,7 +54,7 @@ const Archive = (props) => {
         </div>
         ))}
       </div>
-        
+
       <div className='pagination'>
         <div className='pagination__item'>
           {!isFirst && (
@@ -71,33 +70,34 @@ const Archive = (props) => {
           {!isLast && (
              <Link to ={nextPage} rel='next'>
                <div className='arrow__next'>
-                
+
                </div>
              </Link>
           )}
         </div>
       </div>
-   </Layout>   
+   </Layout>
   )
 }
 export default Archive;
 
-
 export const pageQuery = graphql`
-  query  ArchiveQuery($skip: Int!, $limit: Int!) {
-    allContentfulBlog (
+
+  query ArchiveQuery($skip: Int!, $limit: Int!) {
+     allContentfulBlog (
         sort: { fields: [createdAt], order:DESC }
         filter: {
           node_locale: {eq: "en-Us",}}
           skip: $skip
           limit: $limit
-        ) { 
+        ) {
 
         edges {
           node {
             id
             slug
             title
+            createdAt
             category {
               title
               id
@@ -105,7 +105,7 @@ export const pageQuery = graphql`
             featuredImage {
               fluid(maxWidth: 1200, quality: 85) {
                 src
-                ...GatsbyContentfulFluid      
+                ...GatsbyContentfulFluid
               }
             }
           }

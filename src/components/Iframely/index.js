@@ -14,8 +14,11 @@ export default class Iframely extends React.Component {
     // コンポーネントでReact Helmetを使って読み込む
     return (
       <Helmet>
-        <script type="text/javascript" src="https://cdn.iframe.ly/embed.js" charset="utf-8" />
-           
+        <script
+          type="text/javascript"
+          src="https://cdn.iframe.ly/embed.js"
+          charset="utf-8"
+        />
       </Helmet>
     );
   }
